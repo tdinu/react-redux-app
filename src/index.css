@@ -6,7 +6,7 @@ html {
   --light-green:#5ec297;
   --dark-green: #206B4B;
   --primary-color: #444;
---secondary-color: #eece1a;
+  --secondary-color: #eece1a;
 }
 
 body {

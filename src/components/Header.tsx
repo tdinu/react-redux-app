@@ -15,35 +15,37 @@ const Header: React.FC<HeaderProps> = () => {
   };
 
   return (
-    <nav className='nav-bar'>
-      <ul className='nav-menu'>
-        <li>
-          <NavLink
-            to='/'
-            className='nav-item'
-            // style={({ isActive }) => (isActive ? activeStyle : undefined)}
-          >
-            Home
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to='favorites' className='nav-item'>
-            Favorites
-          </NavLink>
-        </li>
-      </ul>
-      <div className='nav-search'>
-        <form onSubmit={onSubmit}>
-          <input
-            type='search'
-            placeholder='Search'
-            value={query}
-            onChange={handleOnChange}
-          />
-          <button type='submit'>Search</button>
-        </form>
-      </div>
-    </nav>
+    <header>
+      <nav className='nav-bar'>
+        <ul className='nav-menu'>
+          <li>
+            <NavLink
+              to='/'
+              className='nav-item'
+              // style={({ isActive }) => (isActive ? activeStyle : undefined)}
+            >
+              Home
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to='favorites' className='nav-item'>
+              Favorites
+            </NavLink>
+          </li>
+        </ul>
+        <div className='nav-search'>
+          <form onSubmit={onSubmit}>
+            <input
+              type='search'
+              placeholder='Search'
+              value={query}
+              onChange={handleOnChange}
+            />
+            <button type='submit'>Search</button>
+          </form>
+        </div>
+      </nav>
+    </header>
   );
 };
 

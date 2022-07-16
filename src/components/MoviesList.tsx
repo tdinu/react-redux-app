@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Movie, APIResponse } from '../utils/types';
 import { useGetAllShows, useGetShowDetails } from '../utils/use-queries';
+import MovieCard from './MovieCard';
 
 type MoviesListProps = {};
 
@@ -19,18 +20,16 @@ const MoviesList: React.FC<MoviesListProps> = () => {
   }, [data]);
 
   return (
-    <div className='main-container'>
+    <main className='main-container'>
       {movies &&
         movies.length > 0 &&
         movies.map((movie: Movie) => {
-          let imgUrl = movie?.image?.medium;
           return (
-            <div key={movie?.id}>
-              <img src={imgUrl} alt='img' />
-            </div>
+            <MovieCard movie={movie}/>
+            
           );
         })}
-    </div>
+    </main>
   );
 };
 
