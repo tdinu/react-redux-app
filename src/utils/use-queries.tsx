@@ -1,40 +1,46 @@
 import { useState, useEffect } from 'react';
-import { Movie, APIResponse } from './types';
+import { Show, ShowsAPIResponse, QueryShowsAPIResponse } from './getShows';
+
+async function getShows<T>(url: string, query?: string): Promise<T> {
+  const response = await fetch(url);
+  return await response.json();
+}
 
 export const useGetAllShows = () => {
-  const [data, setData] = useState<Movie[]>([]);
-  const [movie, setMovie] = useState<Movie>();
+  const [data, setData] = useState<ShowsAPIResponse[]>([]);
 
   useEffect(() => {
-    fetch(`https://api.tvmaze.com/shows`)
-      .then((response) => response.json())
-      .then((data) => {
+    const fetchShows = async () => {
+      const api = `https://api.tvmaze.com/shows`;
+      try {
+        const data = await getShows<ShowsAPIResponse[]>(api);
         setData(data);
-      })
-      .catch((error) => {});
+      } catch (err) {}
+    };
+    fetchShows();
   }, []);
-
   return data;
 };
 
 export const useGetQueryShows = (query: string) => {
-  const [data, setData] = useState<Movie[]>([]);
-  const [movie, setMovie] = useState<Movie>();
+  const [data, setData] = useState<QueryShowsAPIResponse[]>([]);
 
   useEffect(() => {
-    fetch(`https://api.tvmaze.com/search/shows?q=${query}`)
-      .then((response) => response.json())
-      .then((data) => {
+    const fetchShows = async () => {
+      const api = `https://api.tvmaze.com/search/shows?q=${query}`;
+      try {
+        const data = await getShows<QueryShowsAPIResponse[]>(api, query);
         setData(data);
-      })
-      .catch((error) => {});
+      } catch (err) {}
+    };
+    fetchShows();
   }, [query]);
 
   return data;
 };
 
 export const useGetShowDetails = (id: number = 32087) => {
-  const [data, setData] = useState<Movie[]>([]);
+  const [data, setData] = useState<Show>();
 
   useEffect(() => {
     fetch(`https://api.tvmaze.com/shows/${id}`)

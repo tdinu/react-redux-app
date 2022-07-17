@@ -4,18 +4,10 @@ import { NavLink } from 'react-router-dom';
 interface HeaderProps {}
 
 const Header: React.FC<HeaderProps> = () => {
-  const [query, setQuery] = useState('');
-
-  const handleOnChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    setQuery(e.currentTarget.value);
-  };
-
-  const onSubmit = (event: React.SyntheticEvent) => {
-    event.preventDefault();
-  };
+  
 
   return (
-    <header>
+    <header className='app-bar'>
       <nav className='nav-bar'>
         <ul className='nav-menu'>
           <li>
@@ -27,13 +19,13 @@ const Header: React.FC<HeaderProps> = () => {
               Home
             </NavLink>
           </li>
-          <li>
+          {/* <li>
             <NavLink to='favorites' className='nav-item'>
               Favorites
             </NavLink>
-          </li>
+        </li> */}
         </ul>
-        <div className='nav-search'>
+        {/* <div className='nav-search'>
           <form onSubmit={onSubmit}>
             <input
               type='search'
@@ -43,7 +35,7 @@ const Header: React.FC<HeaderProps> = () => {
             />
             <button type='submit'>Search</button>
           </form>
-        </div>
+      </div> */}
       </nav>
     </header>
   );
