@@ -18,7 +18,8 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
             {movie?.image && movie?.image?.medium ? (
               <img src={movie?.image?.medium} alt='img' />
             ) : (
-              <Unavailable />
+              <Unavailable
+              />
             )}
           </figure>{' '}
         </Link>

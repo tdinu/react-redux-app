@@ -39,15 +39,14 @@ export const useGetQueryShows = (query: string) => {
   return data;
 };
 
-export const useGetShowDetails = (id: number = 32087) => {
+export const useGetShowDetails = (id: string) => {
   const [data, setData] = useState<Show>();
 
   useEffect(() => {
     fetch(`https://api.tvmaze.com/shows/${id}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log('id', data);
-        // setData(data);
+        setData(data);
       })
       .catch((error) => {});
   }, [id]);
