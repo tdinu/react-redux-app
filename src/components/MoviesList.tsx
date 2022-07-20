@@ -49,6 +49,47 @@ const MoviesList: React.FC<MoviesListProps> = () => {
   // const movie: Show = useGetShowDetails(32087);
 
   useEffect(() => {
+    console.log('queryFav::', queryFav);
+    // getMovieRequest(queryFav);
+  }, [queryFav]);
+
+  useEffect(() => {
+    const movieFavourites = JSON.parse(
+      localStorage.getItem('fav-movies') || '',
+    );
+    console.log('init', movieFavourites);
+    if (movieFavourites) {
+      setFavMovies(movieFavourites);
+    }
+  }, []);
+
+  const saveToLocalStorage = (items: ShowsAPIResponse[] | Show[]) => {
+    localStorage.setItem('fav-movies', JSON.stringify(items));
+  };
+
+  const addFavouriteMovie = (movie: ShowsAPIResponse | Show) => {
+    const newFavouriteList = [...favMovies, movie];
+    console.log(newFavouriteList);
+    setFavMovies(newFavouriteList);
+    saveToLocalStorage(newFavouriteList);
+  };
+
+  const removeFavouriteMovie = (movie: ShowsAPIResponse | Show) => {
+    const newFavouriteList = favMovies.filter(
+      (favourite) => favourite.id !== movie.id,
+    );
+
+    setFavMovies(newFavouriteList);
+    saveToLocalStorage(newFavouriteList);
+  };
+
+  const handleFavMovie = (movie: ShowsAPIResponse | Show) => {
+    const isFav = favMovies.filter((item) => item.id === movie.id);
+    console.log(isFav);
+    isFav.length > 0 ? removeFavouriteMovie(movie) : addFavouriteMovie(movie);
+  };
+
+  useEffect(() => {
     setMovies(data);
   }, [data]);
 
@@ -84,12 +125,19 @@ const MoviesList: React.FC<MoviesListProps> = () => {
             ? queryMovies &&
               queryMovies.length > 0 &&
               queryMovies.map((movie: any) => {
-                return <MovieCard movie={movie.show} />;
+                return (
+                  <MovieCard
+                    movie={movie.show}
+                    handleFavMovie={handleFavMovie}
+                  />
+                );
               })
             : movies &&
               movies.length > 0 &&
               movies.map((movie: ShowsAPIResponse | Show) => {
-                return <MovieCard movie={movie} />;
+                return (
+                  <MovieCard movie={movie} handleFavMovie={handleFavMovie} />
+                );
               })}
         </div>
       </section>
@@ -97,17 +145,18 @@ const MoviesList: React.FC<MoviesListProps> = () => {
       <section className='shows-section'>
         <div className='section-header'>
           <h3>Favorite Shows</h3>
-          <div className='search-field'>
-            <form onSubmit={onSubmit}>
-              <input
-                type='search'
-                name='favshows'
-                placeholder='Search Favorite...'
-                value={queryFav}
-                onChange={handleOnChange}
-                disabled={favMovies.length <= 0}
-              />
-              {/*<button
+          {favMovies && favMovies.length > 0 && (
+            <div className='search-field'>
+              <form onSubmit={onSubmit}>
+                <input
+                  type='search'
+                  name='favshows'
+                  placeholder='Search Favorite...'
+                  value={queryFav}
+                  onChange={handleOnChange}
+                  disabled={favMovies.length <= 0}
+                />
+                {/*<button
                 type='submit'
                 name='favshows'
                 disabled={favMovies.length <= 0}
@@ -115,14 +164,18 @@ const MoviesList: React.FC<MoviesListProps> = () => {
               >
                 Search
             </button>*/}
-            </form>
-          </div>
+              </form>
+            </div>
+          )}
         </div>
+
         <div style={{ display: 'flex', width: '100%', overflowX: 'auto' }}>
           {favMovies &&
             favMovies.length > 0 &&
             favMovies.map((movie: ShowsAPIResponse | Show) => {
-              return <MovieCard movie={movie} />;
+              return (
+                <MovieCard movie={movie} handleFavMovie={handleFavMovie} />
+              );
             })}
         </div>
       </section>

@@ -7,9 +7,10 @@ import { ReactComponent as Unavailable } from '../utils/unavailable-svgrepo.svg'
 
 interface MovieCardProps {
   movie: ShowsAPIResponse | Show;
+  handleFavMovie(movie: ShowsAPIResponse | Show): void;
 }
 
-const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
+const MovieCard: React.FC<MovieCardProps> = ({ movie, handleFavMovie }) => {
   return (
     <article className='card-container'>
       <div key={movie?.id} className='card-content'>
@@ -18,8 +19,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
             {movie?.image && movie?.image?.medium ? (
               <img src={movie?.image?.medium} alt='img' />
             ) : (
-              <Unavailable
-              />
+              <Unavailable />
             )}
           </figure>{' '}
         </Link>
@@ -28,23 +28,29 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
           <div className='card-footer'>
             <div>{movie?.name ?? '-'}</div>
             <div>
-              {movie?.id % 2 === 0 ? (
-                <Favorite
-                  style={{
-                    width: '24px',
-                    height: '24px',
-                    cursor: 'pointer',
-                  }}
-                />
-              ) : (
-                <NotFavorite
-                  style={{
-                    width: '24px',
-                    height: '24px',
-                    cursor: 'pointer',
-                  }}
-                />
-              )}
+              <button
+                onClick={() => {
+                  handleFavMovie(movie);
+                }}
+              >
+                {movie?.id % 2 === 0 ? (
+                  <Favorite
+                    style={{
+                      width: '24px',
+                      height: '24px',
+                      cursor: 'pointer',
+                    }}
+                  />
+                ) : (
+                  <NotFavorite
+                    style={{
+                      width: '24px',
+                      height: '24px',
+                      cursor: 'pointer',
+                    }}
+                  />
+                )}
+              </button>
             </div>
           </div>
         </footer>
