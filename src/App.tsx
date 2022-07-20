@@ -46,31 +46,6 @@ function App() {
   // const data: QueryShowsAPIResponse[] = useGetQueryShows('girls');
   // const movie: Show = useGetShowDetails(32087);
 
-  useEffect(() => {
-    console.log('queryFav::', queryFav);
-    // getMovieRequest(queryFav);
-  }, [queryFav]);
-
-  useEffect(() => {
-    const movieFavourites = JSON.parse(
-      localStorage.getItem('fav-movies') || '',
-    );
-    console.log('init', movieFavourites);
-    if (movieFavourites) {
-      setFavMovies(movieFavourites);
-    }
-  }, []);
-
-  useEffect(() => {
-    setMovies(data);
-  }, [data]);
-
-  useEffect(() => {
-    if (queryAll) {
-      setQueryMovies(dataQuery);
-    }
-  }, [queryAll, dataQuery]);
-
   const [favMovies, setFavMovies] = useState<ShowsAPIResponse[] | Show[]>([]);
 
   const saveToLocalStorage = (items: ShowsAPIResponse[] | Show[]) => {
@@ -79,7 +54,6 @@ function App() {
 
   const addFavouriteMovie = (movie: ShowsAPIResponse | Show) => {
     const newFavouriteList = [movie, ...favMovies];
-    console.log(newFavouriteList);
     setFavMovies(newFavouriteList);
     saveToLocalStorage(newFavouriteList);
   };
@@ -98,6 +72,36 @@ function App() {
     console.log(isFav);
     isFav.length > 0 ? removeFavouriteMovie(movie) : addFavouriteMovie(movie);
   };
+
+  const handleSearchFav = (search: string) => {
+    const newFavouriteList = favMovies
+      // .map((favourite) => favourite.name)
+      .filter((item) => item.name.includes(search));
+    // setFavMovies(newFavouriteList);
+  };
+
+  useEffect(() => {
+    handleSearchFav(queryFav);
+  }, [queryFav]);
+
+  useEffect(() => {
+    const movieFavourites = JSON.parse(
+      localStorage.getItem('fav-movies') || '',
+    );
+    if (movieFavourites) {
+      setFavMovies(movieFavourites);
+    }
+  }, []);
+
+  useEffect(() => {
+    setMovies(data);
+  }, [data]);
+
+  useEffect(() => {
+    if (queryAll) {
+      setQueryMovies(dataQuery);
+    }
+  }, [queryAll, dataQuery]);
 
   return (
     <div className='App'>

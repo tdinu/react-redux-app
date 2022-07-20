@@ -112,15 +112,30 @@ const MoviesList: React.FC<MoviesListProps> = ({
         <div style={{ display: 'flex', width: '100%', overflowX: 'auto' }}>
           {favMovies &&
             favMovies.length > 0 &&
-            favMovies.map((movie: ShowsAPIResponse | Show) => {
-              return (
-                <MovieCard
-                  movie={movie}
-                  favMovies={favMovies}
-                  handleFavMovie={handleFavMovie}
-                />
-              );
-            })}
+            (queryFav
+              ? favMovies
+                  .filter((fav: ShowsAPIResponse | Show) =>
+                    // fav &&
+                    fav.name.toLowerCase().includes(queryFav.toLowerCase()),
+                  )
+                  .map((movie: ShowsAPIResponse | Show) => {
+                    return (
+                      <MovieCard
+                        movie={movie}
+                        favMovies={favMovies}
+                        handleFavMovie={handleFavMovie}
+                      />
+                    );
+                  })
+              : favMovies.map((movie: ShowsAPIResponse | Show) => {
+                  return (
+                    <MovieCard
+                      movie={movie}
+                      favMovies={favMovies}
+                      handleFavMovie={handleFavMovie}
+                    />
+                  );
+                }))}
         </div>
       </section>
     </main>
