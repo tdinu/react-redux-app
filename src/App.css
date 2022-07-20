@@ -109,7 +109,7 @@
     float: right;
 }
 
-.card-footer button {
+.fav-button {
     background: none;
     border: none;
 }
@@ -141,6 +141,13 @@
     border-bottom: 2px solid var(--primary-color);
     padding:2em 0;
     width: 100%;
+}
+.section-details--content li:first-of-type {
+    display: flex;
+    align-items: center;
+}
+.section-details--content li:first-of-type button {
+    margin-right: 0.5em;
 }
 
 @media screen and (min-width: 70em) {
