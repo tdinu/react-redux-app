@@ -6,50 +6,59 @@ async function getShows<T>(url: string, query?: string): Promise<T> {
   return await response.json();
 }
 
-export const useGetAllShows = () => {
+export const useGetAllShows = (url: string) => {
   const [data, setData] = useState<ShowsAPIResponse[]>([]);
 
   useEffect(() => {
     const fetchShows = async () => {
-      const api = `https://api.tvmaze.com/shows`;
       try {
-        const data = await getShows<ShowsAPIResponse[]>(api);
+        const data = await getShows<ShowsAPIResponse[]>(url);
         setData(data);
-      } catch (err) {}
+      } catch (err) {
+        console.log(err);
+      }
     };
     fetchShows();
-  }, []);
+  }, [url]);
   return data;
 };
 
-export const useGetQueryShows = (query: string) => {
+export const useGetQueryShows = (url: string, query: string) => {
   const [data, setData] = useState<QueryShowsAPIResponse[]>([]);
 
   useEffect(() => {
     const fetchShows = async () => {
-      const api = `https://api.tvmaze.com/search/shows?q=${query}`;
       try {
-        const data = await getShows<QueryShowsAPIResponse[]>(api, query);
+        const data = await getShows<QueryShowsAPIResponse[]>(
+          `${url}${query}`,
+          query,
+        );
         setData(data);
-      } catch (err) {}
+      } catch (err) {
+        console.log(err);
+      }
     };
     fetchShows();
-  }, [query]);
+  }, [url, query]);
 
   return data;
 };
 
-export const useGetShowDetails = (id: string) => {
+export const useGetShowDetails = (url: string, id: string) => {
   const [data, setData] = useState<Show>();
 
   useEffect(() => {
-    fetch(`https://api.tvmaze.com/shows/${id}`)
-      .then((response) => response.json())
-      .then((data) => {
+    const fetchShow = async () => {
+      try {
+        const response = await fetch(`${url}${id}`);
+        const data = await response.json();
         setData(data);
-      })
-      .catch((error) => {});
-  }, [id]);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchShow();
+  }, [url, id]);
 
   return data;
 };

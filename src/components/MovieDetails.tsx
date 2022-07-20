@@ -22,8 +22,7 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({
   let { id } = useParams<QueryParams>() as any;
 
   const [movie, setMovie] = useState<Show>();
-  // const data = useGetShowDetails<Show>(id);
-  const data = useGetShowDetails(id);
+  const data = useGetShowDetails(`https://api.tvmaze.com/shows/`, id);
 
   useEffect(() => {
     setMovie(data);

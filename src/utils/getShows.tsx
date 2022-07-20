@@ -15,14 +15,11 @@ export interface QueryShowsAPIResponse {
 }
 
 export interface Show extends ShowsAPIResponse {
-  // id: number;
-  // name: string;
   language: Language;
   genres: string[];
   status: string;
   network: Network | null;
   webChannel: Network | null;
-  // image: Image;
 }
 
 export enum Language {

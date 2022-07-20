@@ -103,7 +103,7 @@ const MoviesList: React.FC<MoviesListProps> = ({
             (queryFav
               ? favMovies
                   .filter((fav: ShowsAPIResponse | Show) =>
-                    fav.name.toLowerCase().includes(queryFav.toLowerCase()),
+                    fav.name?.toLowerCase().includes(queryFav.toLowerCase()),
                   )
                   .map((movie: ShowsAPIResponse | Show) => {
                     return (

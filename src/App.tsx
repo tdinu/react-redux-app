@@ -24,8 +24,13 @@ function App() {
   const [queryAll, setQueryAll] = useState('');
   const [queryFav, setQueryFav] = useState('');
 
-  const data: ShowsAPIResponse[] = useGetAllShows();
-  const dataQuery: QueryShowsAPIResponse[] = useGetQueryShows(queryAll);
+  const data: ShowsAPIResponse[] = useGetAllShows(
+    `https://api.tvmaze.com/shows`,
+  );
+  const dataQuery: QueryShowsAPIResponse[] = useGetQueryShows(
+    `https://api.tvmaze.com/search/shows?q=`,
+    queryAll,
+  );
 
   const handleOnChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     e.target.name === 'allshows'
@@ -58,21 +63,6 @@ function App() {
   };
 
   useEffect(() => {
-    if (localStorage.getItem('fav-movies') !== null) {
-      let movieFavourites = JSON.parse(
-        localStorage.getItem('fav-movies') || '',
-      );
-      console.log(movieFavourites);
-      if (movieFavourites.length > 0) {
-        console.log('if');
-        setFavMovies(movieFavourites);
-      }
-    }
-
-    console.log('init');
-  }, []);
-
-  useEffect(() => {
     setMovies(data);
   }, [data]);
 
@@ -81,6 +71,17 @@ function App() {
       setQueryMovies(dataQuery);
     }
   }, [queryAll, dataQuery]);
+
+  useEffect(() => {
+    if (localStorage.getItem('fav-movies') !== null && data.length) {
+      let movieFavourites = JSON.parse(
+        localStorage.getItem('fav-movies') || '',
+      );
+      if (movieFavourites.length > 0) {
+        setFavMovies(movieFavourites);
+      }
+    }
+  }, [data]);
 
   return (
     <div className='App'>

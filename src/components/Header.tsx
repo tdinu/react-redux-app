@@ -1,21 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 interface HeaderProps {}
 
 const Header: React.FC<HeaderProps> = () => {
-  
-
   return (
     <header className='app-bar'>
       <nav className='nav-bar'>
         <ul className='nav-menu'>
           <li>
-            <NavLink
-              to='/'
-              className='nav-item'
-              // style={({ isActive }) => (isActive ? activeStyle : undefined)}
-            >
+            <NavLink to='/' className='nav-item'>
               Home
             </NavLink>
           </li>
@@ -25,17 +19,6 @@ const Header: React.FC<HeaderProps> = () => {
             </NavLink>
         </li> */}
         </ul>
-        {/* <div className='nav-search'>
-          <form onSubmit={onSubmit}>
-            <input
-              type='search'
-              placeholder='Search'
-              value={query}
-              onChange={handleOnChange}
-            />
-            <button type='submit'>Search</button>
-          </form>
-      </div> */}
       </nav>
     </header>
   );

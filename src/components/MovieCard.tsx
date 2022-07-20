@@ -17,8 +17,8 @@ const MovieCard: React.FC<MovieCardProps> = ({
   handleFavMovie,
 }) => {
   return (
-    <article className='card-container'>
-      <div key={movie?.id} className='card-content'>
+    <article key={movie?.id} className='card-container'>
+      <div className='card-content'>
         <Link to={movie?.id.toString()}>
           <figure>
             {movie?.image && movie?.image?.medium ? (
@@ -39,7 +39,9 @@ const MovieCard: React.FC<MovieCardProps> = ({
                   handleFavMovie(movie);
                 }}
               >
-                {favMovies.map((fav) => fav.id).includes(movie.id) ? (
+                {favMovies &&
+                favMovies.length > 0 &&
+                favMovies.map((fav) => fav.id).includes(movie.id) ? (
                   <Favorite
                     style={{
                       width: '24px',
