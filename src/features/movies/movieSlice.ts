@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
   movies: [],
@@ -15,5 +15,5 @@ const movieSlice = createSlice({
 });
 
 export const { addMovies } = movieSlice.actions;
-export const getAllMovies = (state:any) => state.movies.movies;
+export const getAllMovies = (state: any) => state.movies.movies;
 export default movieSlice.reducer;

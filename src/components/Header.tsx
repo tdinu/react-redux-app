@@ -10,7 +10,7 @@ const Header: React.FC<HeaderProps> = () => {
         <ul className='nav-menu'>
           <li>
             <NavLink to='/' className='nav-item'>
-              Home
+              Showbucket App
             </NavLink>
           </li>
           {/* <li>
