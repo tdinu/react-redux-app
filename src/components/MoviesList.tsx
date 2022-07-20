@@ -1,10 +1,9 @@
-import React, { useEffect, useState, MouseEvent } from 'react';
+import React from 'react';
 import {
   Show,
   ShowsAPIResponse,
   QueryShowsAPIResponse,
 } from '../utils/getShows';
-import { useGetAllShows, useGetQueryShows } from '../utils/use-queries';
 import MovieCard from './MovieCard';
 
 type MoviesListProps = {
@@ -20,10 +19,10 @@ type MoviesListProps = {
 const MoviesList: React.FC<MoviesListProps> = ({
   movies,
   favMovies,
-  handleFavMovie,
   queryAll,
   queryFav,
   queryMovies,
+  handleFavMovie,
   handleOnChange,
 }) => {
   return (
@@ -45,9 +44,6 @@ const MoviesList: React.FC<MoviesListProps> = ({
                 value={queryAll}
                 onChange={handleOnChange}
               />
-              {/*<button type='submit' name='allshows' onClick={handleSearch}>
-                Search
-            </button>*/}
             </form>
           </div>
         </div>
@@ -96,14 +92,6 @@ const MoviesList: React.FC<MoviesListProps> = ({
                   onChange={handleOnChange}
                   disabled={favMovies.length <= 0}
                 />
-                {/*<button
-                type='submit'
-                name='favshows'
-                disabled={favMovies.length <= 0}
-                onClick={handleSearch}
-              >
-                Search
-            </button>*/}
               </form>
             </div>
           )}
@@ -115,7 +103,6 @@ const MoviesList: React.FC<MoviesListProps> = ({
             (queryFav
               ? favMovies
                   .filter((fav: ShowsAPIResponse | Show) =>
-                    // fav &&
                     fav.name.toLowerCase().includes(queryFav.toLowerCase()),
                   )
                   .map((movie: ShowsAPIResponse | Show) => {

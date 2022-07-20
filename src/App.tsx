@@ -1,4 +1,4 @@
-import React, { useEffect, useState, MouseEvent } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 import './App.css';
@@ -15,6 +15,8 @@ import { useGetAllShows, useGetQueryShows } from './utils/use-queries';
 
 function App() {
   const [movies, setMovies] = useState<ShowsAPIResponse[] | Show[]>([]);
+  const [favMovies, setFavMovies] = useState<ShowsAPIResponse[] | Show[]>([]);
+
   const [queryMovies, setQueryMovies] = useState<
     QueryShowsAPIResponse[] | Show[]
   >([]);
@@ -22,31 +24,14 @@ function App() {
   const [queryAll, setQueryAll] = useState('');
   const [queryFav, setQueryFav] = useState('');
 
+  const data: ShowsAPIResponse[] = useGetAllShows();
   const dataQuery: QueryShowsAPIResponse[] = useGetQueryShows(queryAll);
-
-  /* const handleSearch = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    e.currentTarget.name === 'allshows'
-      ? setQueryMovies(dataQuery)
-      : setQueryFav(e.currentTarget.value);
-  }; */
 
   const handleOnChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     e.target.name === 'allshows'
       ? setQueryAll(e.currentTarget.value)
       : setQueryFav(e.currentTarget.value);
-    // console.log(e.currentTarget.value);
-    // setQueryMovies(dataQuery);
   };
-
-  const apiEndPoint = 'https://api.tvmaze.com'; // process.env.REACT_APP_DEMAND_API_ENDPOINT;
-  // const ApiKey = 'mGrXkH5CSm1CXdp82B7SGrrBf0vW02eX';
-  const data: ShowsAPIResponse[] = useGetAllShows();
-  // const dataQuery: QueryShowsAPIResponse[] = useGetQueryShows('');
-  // const data: QueryShowsAPIResponse[] = useGetQueryShows('girls');
-  // const movie: Show = useGetShowDetails(32087);
-
-  const [favMovies, setFavMovies] = useState<ShowsAPIResponse[] | Show[]>([]);
 
   const saveToLocalStorage = (items: ShowsAPIResponse[] | Show[]) => {
     localStorage.setItem('fav-movies', JSON.stringify(items));
@@ -69,28 +54,22 @@ function App() {
 
   const handleFavMovie = (movie: ShowsAPIResponse | Show) => {
     const isFav = favMovies.filter((item) => item.id === movie.id);
-    console.log(isFav);
     isFav.length > 0 ? removeFavouriteMovie(movie) : addFavouriteMovie(movie);
   };
 
-  const handleSearchFav = (search: string) => {
-    const newFavouriteList = favMovies
-      // .map((favourite) => favourite.name)
-      .filter((item) => item.name.includes(search));
-    // setFavMovies(newFavouriteList);
-  };
-
   useEffect(() => {
-    handleSearchFav(queryFav);
-  }, [queryFav]);
-
-  useEffect(() => {
-    const movieFavourites = JSON.parse(
-      localStorage.getItem('fav-movies') || '',
-    );
-    if (movieFavourites) {
-      setFavMovies(movieFavourites);
+    if (localStorage.getItem('fav-movies') !== null) {
+      let movieFavourites = JSON.parse(
+        localStorage.getItem('fav-movies') || '',
+      );
+      console.log(movieFavourites);
+      if (movieFavourites.length > 0) {
+        console.log('if');
+        setFavMovies(movieFavourites);
+      }
     }
+
+    console.log('init');
   }, []);
 
   useEffect(() => {
