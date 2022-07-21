@@ -6,7 +6,7 @@ import {
 } from '../utils/getShows';
 import MovieCard from './MovieCard';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllMovies } from '../app/reducers/movies/movieSlice';
+import { getAllMovies, getQueryMovies } from '../store/movies/movieSlice';
 
 type MoviesListProps = {
   movies: ShowsAPIResponse[] | Show[];
@@ -37,8 +37,11 @@ const MoviesList: React.FC<MoviesListProps> = ({
   // const [favMovies, setFavMovies] = useState<ShowsAPIResponse[] | Show[]>([]);
 
   useEffect(() => {
+    // dispatch(fetchAll({ limit:5 }))
     // @ts-ignore
     dispatch(getAllMovies());
+    // @ts-ignore
+    queryAll && dispatch(getQueryMovies({ query: queryAll }));
   }, [dispatch]);
 
   useEffect(() => {
@@ -53,6 +56,8 @@ const MoviesList: React.FC<MoviesListProps> = ({
       }
     }
   }, [shows]);
+
+  if (isLoading) return <h2>Loading..</h2>;
 
   return (
     <main className='main-container'>
