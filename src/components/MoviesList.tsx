@@ -83,6 +83,7 @@ const MoviesList: React.FC<MoviesListProps> = ({
               queryMovies.map((movie: any) => {
                 return (
                   <MovieCard
+                    key={movie?.id}
                     movie={movie.show}
                     favMovies={favMovies}
                     handleFavMovie={handleFavMovie}
@@ -94,6 +95,7 @@ const MoviesList: React.FC<MoviesListProps> = ({
               shows.map((movie: ShowsAPIResponse | Show) => {
                 return (
                   <MovieCard
+                    key={movie?.id}
                     movie={movie}
                     favMovies={favMovies}
                     handleFavMovie={handleFavMovie}
@@ -137,6 +139,7 @@ const MoviesList: React.FC<MoviesListProps> = ({
                   .map((movie: ShowsAPIResponse | Show) => {
                     return (
                       <MovieCard
+                        key={movie?.id}
                         movie={movie}
                         favMovies={favMovies}
                         handleFavMovie={handleFavMovie}
@@ -146,6 +149,7 @@ const MoviesList: React.FC<MoviesListProps> = ({
               : favMovies.map((movie: ShowsAPIResponse | Show) => {
                   return (
                     <MovieCard
+                      key={movie?.id}
                       movie={movie}
                       favMovies={favMovies}
                       handleFavMovie={handleFavMovie}

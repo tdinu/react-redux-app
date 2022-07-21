@@ -17,7 +17,7 @@ const MovieCard: React.FC<MovieCardProps> = ({
   handleFavMovie,
 }) => {
   return (
-    <article key={movie?.id} className='card-container'>
+    <article className='card-container'>
       <div className='card-content'>
         <Link to={movie?.id.toString()}>
           <figure>
