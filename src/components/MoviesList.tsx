@@ -1,14 +1,18 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Show,
   ShowsAPIResponse,
   QueryShowsAPIResponse,
 } from '../utils/getShows';
 import MovieCard from './MovieCard';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllMovies } from '../app/reducers/movies/movieSlice';
 
 type MoviesListProps = {
   movies: ShowsAPIResponse[] | Show[];
   favMovies: ShowsAPIResponse[] | Show[];
+  // @ts-ignore
+  setFavMovies;
   handleFavMovie(movie: ShowsAPIResponse | Show): void;
   queryAll: string;
   queryFav: string;
@@ -19,12 +23,37 @@ type MoviesListProps = {
 const MoviesList: React.FC<MoviesListProps> = ({
   movies,
   favMovies,
+  setFavMovies,
   queryAll,
   queryFav,
   queryMovies,
   handleFavMovie,
   handleOnChange,
 }) => {
+  const dispatch = useDispatch();
+  // @ts-ignore
+  const { isLoading, shows } = useSelector((state) => state);
+
+  // const [favMovies, setFavMovies] = useState<ShowsAPIResponse[] | Show[]>([]);
+
+  useEffect(() => {
+    // @ts-ignore
+    dispatch(getAllMovies());
+  }, [dispatch]);
+
+  useEffect(() => {
+    // @ts-ignore
+    // console.log('shows::', shows);
+    if (localStorage.getItem('fav-movies') !== null && shows.length) {
+      let movieFavourites = JSON.parse(
+        localStorage.getItem('fav-movies') || '',
+      );
+      if (movieFavourites.length > 0) {
+        setFavMovies(movieFavourites);
+      }
+    }
+  }, [shows]);
+
   return (
     <main className='main-container'>
       <section className='shows-section'>
@@ -60,9 +89,9 @@ const MoviesList: React.FC<MoviesListProps> = ({
                   />
                 );
               })
-            : movies &&
-              movies.length > 0 &&
-              movies.map((movie: ShowsAPIResponse | Show) => {
+            : shows &&
+              shows.length > 0 &&
+              shows.map((movie: ShowsAPIResponse | Show) => {
                 return (
                   <MovieCard
                     movie={movie}

@@ -24,9 +24,9 @@ function App() {
   const [queryAll, setQueryAll] = useState('');
   const [queryFav, setQueryFav] = useState('');
 
-  const data: ShowsAPIResponse[] = useGetAllShows(
+  /* const data: ShowsAPIResponse[] = useGetAllShows(
     `https://api.tvmaze.com/shows`,
-  );
+  ); */
   const dataQuery: QueryShowsAPIResponse[] = useGetQueryShows(
     `https://api.tvmaze.com/search/shows?q=`,
     queryAll,
@@ -62,9 +62,9 @@ function App() {
     isFav.length > 0 ? removeFavouriteMovie(movie) : addFavouriteMovie(movie);
   };
 
-  useEffect(() => {
+  /* useEffect(() => {
     setMovies(data);
-  }, [data]);
+  }, [data]); */
 
   useEffect(() => {
     if (queryAll) {
@@ -73,15 +73,15 @@ function App() {
   }, [queryAll, dataQuery]);
 
   useEffect(() => {
-    if (localStorage.getItem('fav-movies') !== null && data.length) {
+    /* if (localStorage.getItem('fav-movies') !== null && data.length) {
       let movieFavourites = JSON.parse(
         localStorage.getItem('fav-movies') || '',
       );
       if (movieFavourites.length > 0) {
         setFavMovies(movieFavourites);
       }
-    }
-  }, [data]);
+    } */
+  }, []);
 
   return (
     <div className='App'>
@@ -94,6 +94,7 @@ function App() {
                 <MoviesList
                   movies={movies}
                   favMovies={favMovies}
+                  setFavMovies={setFavMovies}
                   handleFavMovie={handleFavMovie}
                   queryAll={queryAll}
                   queryFav={queryFav}
