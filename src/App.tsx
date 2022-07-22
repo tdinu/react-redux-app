@@ -13,7 +13,6 @@ function App() {
         <Routes>
           <Route path='/' element={<MainLayout />}>
             <Route index element={<MoviesList />} />
-            <Route path='favorites' element={<div>Favorites</div>} />
             <Route path=':id' element={<MovieDetails />} />
           </Route>
         </Routes>
