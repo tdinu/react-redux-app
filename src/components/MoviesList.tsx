@@ -1,52 +1,56 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Show,
-  ShowsAPIResponse,
-  QueryShowsAPIResponse,
-} from '../utils/getShows';
+import { Show, ShowsAPIResponse } from '../utils/getShows';
 import MovieCard from './MovieCard';
-import { useDispatch, useSelector } from 'react-redux';
-import { getAllMovies, getQueryMovies } from '../store/movies/movieSlice';
+import { useAppSelector, useAppDispatch } from '../store/hooks';
+
+import {
+  getAllMovies,
+  getQueryMovies,
+  updateSearchQueryAllShows,
+  updateSearchQueryFavShows,
+} from '../store/movies/movieSlice';
+import { RootState } from '../store/store';
 
 type MoviesListProps = {
-  movies: ShowsAPIResponse[] | Show[];
   favMovies: ShowsAPIResponse[] | Show[];
-  // @ts-ignore
-  setFavMovies;
+  setFavMovies: (value: ShowsAPIResponse[] | Show[]) => void;
   handleFavMovie(movie: ShowsAPIResponse | Show): void;
-  queryAll: string;
-  queryFav: string;
-  queryMovies: QueryShowsAPIResponse[] | Show[];
-  handleOnChange: React.ChangeEventHandler<HTMLInputElement>;
 };
 
 const MoviesList: React.FC<MoviesListProps> = ({
-  movies,
   favMovies,
   setFavMovies,
-  queryAll,
-  queryFav,
-  queryMovies,
   handleFavMovie,
-  handleOnChange,
 }) => {
-  const dispatch = useDispatch();
-  // @ts-ignore
-  const { isLoading, shows } = useSelector((state) => state);
+  const dispatch = useAppDispatch();
 
+  const {
+    isLoading,
+    shows,
+    queryShows,
+    searchQueryAllShows,
+    searchQueryFavShows,
+  } = useAppSelector((state: RootState) => state);
+  const [queryAll, setQueryAll] = useState('');
+  const [queryFav, setQueryFav] = useState('');
+  const [queryMovies, setQueryMovies] = useState<ShowsAPIResponse[] | Show[]>(
+    [],
+  );
   // const [favMovies, setFavMovies] = useState<ShowsAPIResponse[] | Show[]>([]);
 
+  const handleOnChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    if (e.target.name === 'allshows') {
+      setQueryAll(e.target.value);
+    } else {
+      setQueryFav(e.currentTarget.value);
+    }
+  };
+
   useEffect(() => {
-    // dispatch(fetchAll({ limit:5 }))
-    // @ts-ignore
-    dispatch(getAllMovies());
-    // @ts-ignore
-    queryAll && dispatch(getQueryMovies({ query: queryAll }));
+    dispatch(getAllMovies(`https://api.tvmaze.com/shows`));
   }, [dispatch]);
 
   useEffect(() => {
-    // @ts-ignore
-    // console.log('shows::', shows);
     if (localStorage.getItem('fav-movies') !== null && shows.length) {
       let movieFavourites = JSON.parse(
         localStorage.getItem('fav-movies') || '',
@@ -55,7 +59,17 @@ const MoviesList: React.FC<MoviesListProps> = ({
         setFavMovies(movieFavourites);
       }
     }
-  }, [shows]);
+  }, [shows, setFavMovies]);
+
+  useEffect(() => {
+    dispatch(
+      getQueryMovies(`https://api.tvmaze.com/search/shows?q=${queryAll}`),
+    );
+  }, [queryAll, dispatch]);
+
+  useEffect(() => {
+    setQueryMovies(queryShows);
+  }, [queryShows]);
 
   if (isLoading) return <h2>Loading..</h2>;
 
@@ -75,7 +89,7 @@ const MoviesList: React.FC<MoviesListProps> = ({
                 name='allshows'
                 placeholder='Search All...'
                 autoComplete='false'
-                value={queryAll}
+                value={queryAll} // {searchQueryAllShows} //
                 onChange={handleOnChange}
               />
             </form>
@@ -89,7 +103,7 @@ const MoviesList: React.FC<MoviesListProps> = ({
                 return (
                   <MovieCard
                     key={movie?.id}
-                    movie={movie.show}
+                    movie={movie?.show}
                     favMovies={favMovies}
                     handleFavMovie={handleFavMovie}
                   />
@@ -124,7 +138,7 @@ const MoviesList: React.FC<MoviesListProps> = ({
                   type='search'
                   name='favshows'
                   placeholder='Search Favorite...'
-                  value={queryFav}
+                  value={searchQueryFavShows} // {queryFav}
                   onChange={handleOnChange}
                   disabled={favMovies.length <= 0}
                 />

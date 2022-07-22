@@ -27,16 +27,16 @@ function App() {
   /* const data: ShowsAPIResponse[] = useGetAllShows(
     `https://api.tvmaze.com/shows`,
   ); */
-  const dataQuery: QueryShowsAPIResponse[] = useGetQueryShows(
+  /*const dataQuery: QueryShowsAPIResponse[] = useGetQueryShows(
     `https://api.tvmaze.com/search/shows?q=`,
     queryAll,
-  );
+  );*/
 
-  const handleOnChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+  /*const handleOnChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     e.target.name === 'allshows'
       ? setQueryAll(e.currentTarget.value)
       : setQueryFav(e.currentTarget.value);
-  };
+  };*/
 
   const saveToLocalStorage = (items: ShowsAPIResponse[] | Show[]) => {
     localStorage.setItem('fav-movies', JSON.stringify(items));
@@ -66,11 +66,11 @@ function App() {
     setMovies(data);
   }, [data]); */
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (queryAll) {
       setQueryMovies(dataQuery);
     }
-  }, [queryAll, dataQuery]);
+  }, [queryAll, dataQuery]);*/
 
   useEffect(() => {
     /* if (localStorage.getItem('fav-movies') !== null && data.length) {
@@ -92,14 +92,9 @@ function App() {
               index
               element={
                 <MoviesList
-                  movies={movies}
                   favMovies={favMovies}
                   setFavMovies={setFavMovies}
                   handleFavMovie={handleFavMovie}
-                  queryAll={queryAll}
-                  queryFav={queryFav}
-                  queryMovies={queryMovies}
-                  handleOnChange={handleOnChange}
                 />
               }
             />

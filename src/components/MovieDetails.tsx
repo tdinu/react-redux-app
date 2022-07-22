@@ -5,8 +5,9 @@ import { useGetShowDetails } from '../utils/use-queries';
 import { ReactComponent as Favorite } from '../utils/favorite.svg';
 import { ReactComponent as NotFavorite } from '../utils/favorite-svgrepo.svg';
 import { ReactComponent as Unavailable } from '../utils/unavailable-svgrepo.svg';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppSelector, useAppDispatch } from '../store/hooks';
 import { getShowDetails } from '../store/movies/movieSlice';
+import { RootState } from '../store/store';
 
 type QueryParams = {
   id: string;
@@ -24,24 +25,24 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({
   let { id } = useParams<QueryParams>() as any;
 
   const [movie, setMovie] = useState<Show>();
-  // const data = useGetShowDetails(`https://api.tvmaze.com/shows/`, id);
 
-  const dispatch = useDispatch();
-  // @ts-ignore
-  const { isLoading, showDetails } = useSelector((state) => state);
+  const dispatch = useAppDispatch();
+
+  const { isLoading, showDetails } = useAppSelector(
+    (state: RootState) => state,
+  );
 
   // const [favMovies, setFavMovies] = useState<ShowsAPIResponse[] | Show[]>([]);
 
   useEffect(() => {
-    // dispatch(fetchAll({ limit:5 }))
-    // @ts-ignore
-    // @ts-ignore
-    id && dispatch(getShowDetails(2));
-  }, [id]);
+    id && dispatch(getShowDetails(id));
+  }, [id, dispatch]);
 
   useEffect(() => {
-    setMovie(showDetails);
+    setMovie(showDetails as Show);
   }, [showDetails]);
+
+  if (isLoading) return <h2>Loading..</h2>;
 
   return (
     <main className='main-container'>
