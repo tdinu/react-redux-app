@@ -15,25 +15,13 @@ function App() {
     ShowsAPIResponse[] | Show[]
   >('fav-movies', []);
 
-  // movie: ShowsAPIResponse | Show
-  // const addFavouriteMovie =  <T,>(movie: T) => {
-
-  const addFavouriteMovie = (movie: ShowsAPIResponse | Show) => {
-    const newFavouriteList = [movie, ...favMovies];
-    setFavMovies(newFavouriteList);
-  };
-
-  const removeFavouriteMovie = (movie: ShowsAPIResponse | Show) => {
-    const newFavouriteList = favMovies.filter(
-      (favourite) => favourite.id !== movie.id,
-    );
-
-    setFavMovies(newFavouriteList);
-  };
-
   const handleFavMovie = (movie: ShowsAPIResponse | Show) => {
     const isFav = favMovies.filter((item) => item.id === movie.id);
-    isFav.length > 0 ? removeFavouriteMovie(movie) : addFavouriteMovie(movie);
+    const newFavouriteList =
+      isFav.length > 0
+        ? favMovies.filter((favourite) => favourite.id !== movie.id)
+        : [movie, ...favMovies];
+    setFavMovies(newFavouriteList);
   };
 
   return (
