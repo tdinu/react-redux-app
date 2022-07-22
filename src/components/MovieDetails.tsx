@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { ShowsAPIResponse, Show } from '../utils/getShows';
-import { useGetShowDetails } from '../utils/use-queries';
 import { ReactComponent as Favorite } from '../utils/favorite.svg';
 import { ReactComponent as NotFavorite } from '../utils/favorite-svgrepo.svg';
 import { ReactComponent as Unavailable } from '../utils/unavailable-svgrepo.svg';
@@ -18,7 +17,10 @@ interface MovieDetailsProps {
   handleFavMovie(movie: ShowsAPIResponse | Show): void;
 }
 
-const MovieDetails: React.FC<MovieDetailsProps> = ({ handleFavMovie }) => {
+const MovieDetails: React.FC<MovieDetailsProps> = ({
+  favMovies,
+  handleFavMovie,
+}) => {
   let { id } = useParams<QueryParams>() as any;
 
   const [movie, setMovie] = useState<Show>();
@@ -28,8 +30,6 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({ handleFavMovie }) => {
   const { isLoading, showDetails } = useAppSelector(
     (state: RootState) => state,
   );
-
-  const [favMovies, setFavMovies] = useState<ShowsAPIResponse[] | Show[]>([]);
 
   useEffect(() => {
     id && dispatch(getShowDetails(id));
@@ -64,21 +64,9 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({ handleFavMovie }) => {
                   }}
                 >
                   {favMovies.map((fav) => fav.id).includes(movie.id) ? (
-                    <Favorite
-                      style={{
-                        width: '24px',
-                        height: '24px',
-                        cursor: 'pointer',
-                      }}
-                    />
+                    <Favorite className='fav-icon' />
                   ) : (
-                    <NotFavorite
-                      style={{
-                        width: '24px',
-                        height: '24px',
-                        cursor: 'pointer',
-                      }}
-                    />
+                    <NotFavorite className='fav-icon' />
                   )}
                 </button>
                 <h2>{movie?.name}</h2>

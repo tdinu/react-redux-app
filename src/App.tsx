@@ -6,37 +6,10 @@ import MainLayout from './components/MainLayout';
 import MoviesList from './components/MoviesList';
 import MovieDetails from './components/MovieDetails';
 
-import {
-  Show,
-  ShowsAPIResponse,
-  QueryShowsAPIResponse,
-} from './utils/getShows';
-import { useGetAllShows, useGetQueryShows } from './utils/use-queries';
+import { Show, ShowsAPIResponse } from './utils/getShows';
 
 function App() {
-  const [movies, setMovies] = useState<ShowsAPIResponse[] | Show[]>([]);
   const [favMovies, setFavMovies] = useState<ShowsAPIResponse[] | Show[]>([]);
-
-  const [queryMovies, setQueryMovies] = useState<
-    QueryShowsAPIResponse[] | Show[]
-  >([]);
-
-  const [queryAll, setQueryAll] = useState('');
-  const [queryFav, setQueryFav] = useState('');
-
-  /* const data: ShowsAPIResponse[] = useGetAllShows(
-    `https://api.tvmaze.com/shows`,
-  ); */
-  /*const dataQuery: QueryShowsAPIResponse[] = useGetQueryShows(
-    `https://api.tvmaze.com/search/shows?q=`,
-    queryAll,
-  );*/
-
-  /*const handleOnChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    e.target.name === 'allshows'
-      ? setQueryAll(e.currentTarget.value)
-      : setQueryFav(e.currentTarget.value);
-  };*/
 
   const saveToLocalStorage = (items: ShowsAPIResponse[] | Show[]) => {
     localStorage.setItem('fav-movies', JSON.stringify(items));
@@ -61,27 +34,7 @@ function App() {
     const isFav = favMovies.filter((item) => item.id === movie.id);
     isFav.length > 0 ? removeFavouriteMovie(movie) : addFavouriteMovie(movie);
   };
-
-  /* useEffect(() => {
-    setMovies(data);
-  }, [data]); */
-
-  /*useEffect(() => {
-    if (queryAll) {
-      setQueryMovies(dataQuery);
-    }
-  }, [queryAll, dataQuery]);*/
-
-  useEffect(() => {
-    /* if (localStorage.getItem('fav-movies') !== null && data.length) {
-      let movieFavourites = JSON.parse(
-        localStorage.getItem('fav-movies') || '',
-      );
-      if (movieFavourites.length > 0) {
-        setFavMovies(movieFavourites);
-      }
-    } */
-  }, []);
+  
 
   return (
     <div className='App'>

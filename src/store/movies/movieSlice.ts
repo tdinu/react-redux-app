@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 
-// Define a type for the slice state
 interface ShowsState {
   isLoading: boolean;
   shows: [];

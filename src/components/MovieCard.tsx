@@ -42,21 +42,9 @@ const MovieCard: React.FC<MovieCardProps> = ({
                 {favMovies &&
                 favMovies.length > 0 &&
                 favMovies.map((fav) => fav.id).includes(movie.id) ? (
-                  <Favorite
-                    style={{
-                      width: '24px',
-                      height: '24px',
-                      cursor: 'pointer',
-                    }}
-                  />
+                  <Favorite className='fav-icon' />
                 ) : (
-                  <NotFavorite
-                    style={{
-                      width: '24px',
-                      height: '24px',
-                      cursor: 'pointer',
-                    }}
-                  />
+                  <NotFavorite className='fav-icon' />
                 )}
               </button>
             </div>

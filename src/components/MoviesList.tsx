@@ -24,13 +24,10 @@ const MoviesList: React.FC<MoviesListProps> = ({
 }) => {
   const dispatch = useAppDispatch();
 
-  const {
-    isLoading,
-    shows,
-    queryShows,
-    searchQueryAllShows,
-    searchQueryFavShows,
-  } = useAppSelector((state: RootState) => state);
+  const { isLoading, shows, queryShows } = useAppSelector(
+    (state: RootState) => state,
+  );
+
   const [queryAll, setQueryAll] = useState('');
   const [queryFav, setQueryFav] = useState('');
   const [queryMovies, setQueryMovies] = useState<ShowsAPIResponse[] | Show[]>(
