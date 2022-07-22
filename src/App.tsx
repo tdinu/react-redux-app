@@ -8,17 +8,16 @@ import MovieDetails from './components/MovieDetails';
 
 import { Show, ShowsAPIResponse } from './utils/getShows';
 
-function App() {
-  const [favMovies, setFavMovies] = useState<ShowsAPIResponse[] | Show[]>([]);
+import useLocalStorage from './utils/useLocalStorage';
 
-  const saveToLocalStorage = (items: ShowsAPIResponse[] | Show[]) => {
-    localStorage.setItem('fav-movies', JSON.stringify(items));
-  };
+function App() {
+  const [favMovies, setFavMovies] = useLocalStorage<
+    ShowsAPIResponse[] | Show[]
+  >('fav-movies', []);
 
   const addFavouriteMovie = (movie: ShowsAPIResponse | Show) => {
     const newFavouriteList = [movie, ...favMovies];
     setFavMovies(newFavouriteList);
-    saveToLocalStorage(newFavouriteList);
   };
 
   const removeFavouriteMovie = (movie: ShowsAPIResponse | Show) => {
@@ -27,14 +26,12 @@ function App() {
     );
 
     setFavMovies(newFavouriteList);
-    saveToLocalStorage(newFavouriteList);
   };
 
   const handleFavMovie = (movie: ShowsAPIResponse | Show) => {
     const isFav = favMovies.filter((item) => item.id === movie.id);
     isFav.length > 0 ? removeFavouriteMovie(movie) : addFavouriteMovie(movie);
   };
-  
 
   return (
     <div className='App'>

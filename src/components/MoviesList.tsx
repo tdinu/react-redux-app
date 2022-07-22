@@ -3,13 +3,9 @@ import { Show, ShowsAPIResponse } from '../utils/getShows';
 import MovieCard from './MovieCard';
 import { useAppSelector, useAppDispatch } from '../store/hooks';
 
-import {
-  getAllMovies,
-  getQueryMovies,
-  updateSearchQueryAllShows,
-  updateSearchQueryFavShows,
-} from '../store/movies/movieSlice';
+import { getAllMovies, getQueryMovies } from '../store/movies/movieSlice';
 import { RootState } from '../store/store';
+import useLocalStorage from '../utils/useLocalStorage';
 
 type MoviesListProps = {
   favMovies: ShowsAPIResponse[] | Show[];
@@ -33,7 +29,6 @@ const MoviesList: React.FC<MoviesListProps> = ({
   const [queryMovies, setQueryMovies] = useState<ShowsAPIResponse[] | Show[]>(
     [],
   );
-  // const [favMovies, setFavMovies] = useState<ShowsAPIResponse[] | Show[]>([]);
 
   const handleOnChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     if (e.target.name === 'allshows') {
@@ -48,24 +43,12 @@ const MoviesList: React.FC<MoviesListProps> = ({
   }, [dispatch]);
 
   useEffect(() => {
-    if (localStorage.getItem('fav-movies') !== null && shows.length) {
-      let movieFavourites = JSON.parse(
-        localStorage.getItem('fav-movies') || '',
-      );
-      if (movieFavourites.length > 0) {
-        setFavMovies(movieFavourites);
-      }
-    }
-  }, [shows, setFavMovies]);
-
-  useEffect(() => {
     dispatch(
       getQueryMovies(`https://api.tvmaze.com/search/shows?q=${queryAll}`),
     );
   }, [queryAll, dispatch]);
 
   useEffect(() => {
-    console.log(queryShows);
     setQueryMovies(queryShows);
   }, [queryShows]);
 
