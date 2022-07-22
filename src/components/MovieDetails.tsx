@@ -8,10 +8,6 @@ import { useAppSelector, useAppDispatch } from '../store/hooks';
 import { getShowDetails } from '../store/movies/movieSlice';
 import { RootState } from '../store/store';
 
-type QueryParams = {
-  id: string;
-};
-
 interface MovieDetailsProps {
   favMovies: ShowsAPIResponse[] | Show[];
   handleFavMovie(movie: ShowsAPIResponse | Show): void;
@@ -21,7 +17,7 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({
   favMovies,
   handleFavMovie,
 }) => {
-  let { id } = useParams<QueryParams>() as any;
+  const { id } = useParams<'id'>();
 
   const [movie, setMovie] = useState<Show>();
 
@@ -46,7 +42,7 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({
       <section className='section-image'>
         <figure>
           {movie?.image && movie?.image?.original ? (
-            <img src={movie?.image?.original} alt='img' />
+            <img src={movie?.image?.original} alt={movie?.name} />
           ) : (
             <Unavailable />
           )}

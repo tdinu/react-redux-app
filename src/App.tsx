@@ -15,6 +15,9 @@ function App() {
     ShowsAPIResponse[] | Show[]
   >('fav-movies', []);
 
+  // movie: ShowsAPIResponse | Show
+  // const addFavouriteMovie =  <T,>(movie: T) => {
+
   const addFavouriteMovie = (movie: ShowsAPIResponse | Show) => {
     const newFavouriteList = [movie, ...favMovies];
     setFavMovies(newFavouriteList);

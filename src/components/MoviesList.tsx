@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Show, ShowsAPIResponse } from '../utils/getShows';
+import {
+  Show,
+  ShowsAPIResponse,
+  QueryShowsAPIResponse,
+} from '../utils/getShows';
 import MovieCard from './MovieCard';
 import { useAppSelector, useAppDispatch } from '../store/hooks';
 
 import { getAllMovies, getQueryMovies } from '../store/movies/movieSlice';
 import { RootState } from '../store/store';
-import useLocalStorage from '../utils/useLocalStorage';
+// import useToggleFavorite from '../utils/useToggleFavorite';
 
 type MoviesListProps = {
   favMovies: ShowsAPIResponse[] | Show[];
@@ -26,9 +30,10 @@ const MoviesList: React.FC<MoviesListProps> = ({
 
   const [queryAll, setQueryAll] = useState('');
   const [queryFav, setQueryFav] = useState('');
-  const [queryMovies, setQueryMovies] = useState<ShowsAPIResponse[] | Show[]>(
-    [],
-  );
+  const [queryMovies, setQueryMovies] = useState<QueryShowsAPIResponse[]>([]);
+
+  /* const [favorites, toggleItemInLocalStorage] =
+    useToggleFavorite('favorite-ids'); */
 
   const handleOnChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     if (e.target.name === 'allshows') {
@@ -80,13 +85,14 @@ const MoviesList: React.FC<MoviesListProps> = ({
           {queryAll
             ? queryMovies &&
               queryMovies.length > 0 &&
-              queryMovies.map((movie: any) => {
+              queryMovies.map((movie: QueryShowsAPIResponse) => {
                 return (
                   <MovieCard
-                    key={movie?.id}
+                    key={movie?.show?.id}
                     movie={movie?.show}
                     favMovies={favMovies}
                     handleFavMovie={handleFavMovie}
+                    // toggleItemInLocalStorage={toggleItemInLocalStorage}
                   />
                 );
               })
@@ -99,6 +105,7 @@ const MoviesList: React.FC<MoviesListProps> = ({
                     movie={movie}
                     favMovies={favMovies}
                     handleFavMovie={handleFavMovie}
+                    // toggleItemInLocalStorage={toggleItemInLocalStorage}
                   />
                 );
               })}
@@ -143,6 +150,7 @@ const MoviesList: React.FC<MoviesListProps> = ({
                         movie={movie}
                         favMovies={favMovies}
                         handleFavMovie={handleFavMovie}
+                        // toggleItemInLocalStorage={toggleItemInLocalStorage}
                       />
                     );
                   })
@@ -153,6 +161,7 @@ const MoviesList: React.FC<MoviesListProps> = ({
                       movie={movie}
                       favMovies={favMovies}
                       handleFavMovie={handleFavMovie}
+                      // toggleItemInLocalStorage={toggleItemInLocalStorage}
                     />
                   );
                 }))}
