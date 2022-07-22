@@ -68,6 +68,7 @@ const MoviesList: React.FC<MoviesListProps> = ({
   }, [queryAll, dispatch]);
 
   useEffect(() => {
+    console.log(queryShows);
     setQueryMovies(queryShows);
   }, [queryShows]);
 
@@ -138,7 +139,7 @@ const MoviesList: React.FC<MoviesListProps> = ({
                   type='search'
                   name='favshows'
                   placeholder='Search Favorite...'
-                  value={searchQueryFavShows} // {queryFav}
+                  value={queryFav}
                   onChange={handleOnChange}
                   disabled={favMovies.length <= 0}
                 />

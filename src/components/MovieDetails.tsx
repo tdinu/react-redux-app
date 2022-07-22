@@ -18,10 +18,7 @@ interface MovieDetailsProps {
   handleFavMovie(movie: ShowsAPIResponse | Show): void;
 }
 
-const MovieDetails: React.FC<MovieDetailsProps> = ({
-  favMovies,
-  handleFavMovie,
-}) => {
+const MovieDetails: React.FC<MovieDetailsProps> = ({ handleFavMovie }) => {
   let { id } = useParams<QueryParams>() as any;
 
   const [movie, setMovie] = useState<Show>();
@@ -32,7 +29,7 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({
     (state: RootState) => state,
   );
 
-  // const [favMovies, setFavMovies] = useState<ShowsAPIResponse[] | Show[]>([]);
+  const [favMovies, setFavMovies] = useState<ShowsAPIResponse[] | Show[]>([]);
 
   useEffect(() => {
     id && dispatch(getShowDetails(id));
