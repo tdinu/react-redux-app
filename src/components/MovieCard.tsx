@@ -4,28 +4,18 @@ import { ShowsAPIResponse, Show } from '../utils/getShows';
 import { ReactComponent as Favorite } from '../utils/favorite.svg';
 import { ReactComponent as NotFavorite } from '../utils/favorite-svgrepo.svg';
 import { ReactComponent as Unavailable } from '../utils/unavailable-svgrepo.svg';
-import useToggleFavorite from '../utils/useToggleFavorite';
 
 interface MovieCardProps {
   movie: ShowsAPIResponse | Show;
   favMovies: ShowsAPIResponse[] | Show[];
   handleFavMovie(movie: ShowsAPIResponse | Show): void;
-  // toggleItemInLocalStorage(id: number): void;
 }
 
 const MovieCard: React.FC<MovieCardProps> = ({
   movie,
   favMovies,
   handleFavMovie,
-  // toggleItemInLocalStorage,
 }) => {
-  const [favorites, toggleItemInLocalStorage] =
-    useToggleFavorite('favorite-ids');
-
-  React.useEffect(() => {
-    // toggleItemInLocalStorage(1);
-  }, [favorites]);
-
   return (
     <article className='card-container'>
       <div className='card-content'>
@@ -47,7 +37,6 @@ const MovieCard: React.FC<MovieCardProps> = ({
                 className='fav-button'
                 onClick={() => {
                   handleFavMovie(movie);
-                  toggleItemInLocalStorage(movie?.id);
                 }}
               >
                 {favMovies &&

@@ -9,19 +9,9 @@ import { useAppSelector, useAppDispatch } from '../store/hooks';
 
 import { getAllMovies, getQueryMovies } from '../store/movies/movieSlice';
 import { RootState } from '../store/store';
-// import useToggleFavorite from '../utils/useToggleFavorite';
+import useLocalStorage from '../utils/useLocalStorage';
 
-type MoviesListProps = {
-  favMovies: ShowsAPIResponse[] | Show[];
-  setFavMovies: (value: ShowsAPIResponse[] | Show[]) => void;
-  handleFavMovie(movie: ShowsAPIResponse | Show): void;
-};
-
-const MoviesList: React.FC<MoviesListProps> = ({
-  favMovies,
-  setFavMovies,
-  handleFavMovie,
-}) => {
+const MoviesList: React.FC = () => {
   const dispatch = useAppDispatch();
 
   const { isLoading, shows, queryShows } = useAppSelector(
@@ -32,15 +22,25 @@ const MoviesList: React.FC<MoviesListProps> = ({
   const [queryFav, setQueryFav] = useState('');
   const [queryMovies, setQueryMovies] = useState<QueryShowsAPIResponse[]>([]);
 
-  /* const [favorites, toggleItemInLocalStorage] =
-    useToggleFavorite('favorite-ids'); */
-
   const handleOnChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     if (e.target.name === 'allshows') {
       setQueryAll(e.target.value);
     } else {
       setQueryFav(e.currentTarget.value);
     }
+  };
+
+  const [favMovies, setFavMovies] = useLocalStorage<
+    ShowsAPIResponse[] | Show[]
+  >('fav-movies', []);
+
+  const handleFavMovie = (movie: ShowsAPIResponse | Show) => {
+    const isFav = favMovies.filter((item) => item.id === movie.id);
+    const newFavouriteList =
+      isFav.length > 0
+        ? favMovies.filter((favourite) => favourite.id !== movie.id)
+        : [movie, ...favMovies];
+    setFavMovies(newFavouriteList);
   };
 
   useEffect(() => {
@@ -75,13 +75,15 @@ const MoviesList: React.FC<MoviesListProps> = ({
                 name='allshows'
                 placeholder='Search All...'
                 autoComplete='false'
-                value={queryAll} // {searchQueryAllShows} //
+                value={queryAll}
                 onChange={handleOnChange}
               />
             </form>
           </div>
         </div>
-        <div style={{ display: 'flex', width: '100%', overflowX: 'auto' }}>
+        <div
+          className='section-content'
+        >
           {queryAll
             ? queryMovies &&
               queryMovies.length > 0 &&
@@ -92,7 +94,6 @@ const MoviesList: React.FC<MoviesListProps> = ({
                     movie={movie?.show}
                     favMovies={favMovies}
                     handleFavMovie={handleFavMovie}
-                    // toggleItemInLocalStorage={toggleItemInLocalStorage}
                   />
                 );
               })
@@ -105,7 +106,6 @@ const MoviesList: React.FC<MoviesListProps> = ({
                     movie={movie}
                     favMovies={favMovies}
                     handleFavMovie={handleFavMovie}
-                    // toggleItemInLocalStorage={toggleItemInLocalStorage}
                   />
                 );
               })}
@@ -135,7 +135,10 @@ const MoviesList: React.FC<MoviesListProps> = ({
           )}
         </div>
 
-        <div style={{ display: 'flex', width: '100%', overflowX: 'auto' }}>
+        <div
+          className='section-content'
+          
+        >
           {favMovies &&
             favMovies.length > 0 &&
             (queryFav
@@ -150,7 +153,6 @@ const MoviesList: React.FC<MoviesListProps> = ({
                         movie={movie}
                         favMovies={favMovies}
                         handleFavMovie={handleFavMovie}
-                        // toggleItemInLocalStorage={toggleItemInLocalStorage}
                       />
                     );
                   })
@@ -161,7 +163,6 @@ const MoviesList: React.FC<MoviesListProps> = ({
                       movie={movie}
                       favMovies={favMovies}
                       handleFavMovie={handleFavMovie}
-                      // toggleItemInLocalStorage={toggleItemInLocalStorage}
                     />
                   );
                 }))}

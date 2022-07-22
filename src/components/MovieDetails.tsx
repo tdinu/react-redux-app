@@ -7,16 +7,9 @@ import { ReactComponent as Unavailable } from '../utils/unavailable-svgrepo.svg'
 import { useAppSelector, useAppDispatch } from '../store/hooks';
 import { getShowDetails } from '../store/movies/movieSlice';
 import { RootState } from '../store/store';
+import useLocalStorage from '../utils/useLocalStorage';
 
-interface MovieDetailsProps {
-  favMovies: ShowsAPIResponse[] | Show[];
-  handleFavMovie(movie: ShowsAPIResponse | Show): void;
-}
-
-const MovieDetails: React.FC<MovieDetailsProps> = ({
-  favMovies,
-  handleFavMovie,
-}) => {
+const MovieDetails: React.FC = () => {
   const { id } = useParams<'id'>();
 
   const [movie, setMovie] = useState<Show>();
@@ -26,6 +19,19 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({
   const { isLoading, showDetails } = useAppSelector(
     (state: RootState) => state,
   );
+
+  const [favMovies, setFavMovies] = useLocalStorage<
+    ShowsAPIResponse[] | Show[]
+  >('fav-movies', []);
+
+  const handleFavMovie = (movie: ShowsAPIResponse | Show) => {
+    const isFav = favMovies.filter((item) => item.id === movie.id);
+    const newFavouriteList =
+      isFav.length > 0
+        ? favMovies.filter((favourite) => favourite.id !== movie.id)
+        : [movie, ...favMovies];
+    setFavMovies(newFavouriteList);
+  };
 
   useEffect(() => {
     id && dispatch(getShowDetails(id));

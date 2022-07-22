@@ -59,7 +59,11 @@
 .card-container {
     margin: 0.25em ;
 }
-
+.section-content { 
+    display: flex; 
+    width: 100%; 
+    overflow-x:  auto;
+}
 .card-content {
     height: 100%;
 
