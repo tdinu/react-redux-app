@@ -27,16 +27,16 @@ const MoviesList: React.FC = () => {
     searchQueryFavShows,
   } = useAppSelector((state: RootState) => state);
 
-  // const [queryAll, setQueryAll] = useState(searchQueryAllShows);
-  // const [queryFav, setQueryFav] = useState(searchQueryFavShows);
   const [queryAll, setQueryAll] = useLocalStorage<string>(
     'query-all',
     searchQueryAllShows,
-  ); // useState(searchQueryAllShows);
+  );
   const [queryFav, setQueryFav] = useLocalStorage<string>(
     'query-favs',
     searchQueryFavShows,
-  ); // useState(searchQueryFavShows);
+  );
+
+  const [movies, setMovies] = useState<ShowsAPIResponse[]>([]);
   const [queryMovies, setQueryMovies] = useState<QueryShowsAPIResponse[]>([]);
   const [favMovies, setFavMovies] = useLocalStorage<
     ShowsAPIResponse[] | Show[]
@@ -78,8 +78,8 @@ const MoviesList: React.FC = () => {
   }, [queryAll, dispatch]);
 
   useEffect(() => {
-    setQueryMovies(queryShows);
-  }, [queryShows]);
+    setMovies(shows);
+  }, [shows]);
 
   useEffect(() => {
     setQueryMovies(queryShows);
@@ -124,9 +124,9 @@ const MoviesList: React.FC = () => {
                   />
                 );
               })
-            : shows &&
-              shows.length > 0 &&
-              shows.map((movie: ShowsAPIResponse | Show) => {
+            : movies &&
+              movies.length > 0 &&
+              movies.map((movie: ShowsAPIResponse | Show) => {
                 return (
                   <MovieCard
                     key={movie?.id}

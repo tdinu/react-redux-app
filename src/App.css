@@ -74,14 +74,11 @@
     text-decoration: none;
     color:var(--primary-color)
 }
-
-
 .card-content figure {
     margin: 0 ;
     width:210px;
     height:295px;
     border-bottom: 1px solid var(--secondary-color);
-
 }
 .card-content figure svg {
     margin: 0 ;
