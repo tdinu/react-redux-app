@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 import './App.css';
 import MainLayout from './components/MainLayout';
-import MoviesList from './components/MoviesList';
-import MovieDetails from './components/MovieDetails';
+const MoviesList = lazy(() => import('./components/MoviesList'));
+const MovieDetails = lazy(() => import('./components/MovieDetails'));
 
 function App() {
   return (

@@ -7,26 +7,37 @@ import {
 import MovieCard from './MovieCard';
 import { useAppSelector, useAppDispatch } from '../store/hooks';
 
-import { getAllMovies, getQueryMovies } from '../store/movies/movieSlice';
+import {
+  getAllMovies,
+  getQueryMovies,
+  updateSearchQueryAllShows,
+  updateSearchQueryFavShows,
+} from '../store/movies/movieSlice';
 import { RootState } from '../store/store';
 import useLocalStorage from '../utils/useLocalStorage';
 
 const MoviesList: React.FC = () => {
   const dispatch = useAppDispatch();
 
-  const { isLoading, shows, queryShows } = useAppSelector(
-    (state: RootState) => state,
-  );
+  const {
+    isLoading,
+    shows,
+    queryShows,
+    searchQueryAllShows,
+    searchQueryFavShows,
+  } = useAppSelector((state: RootState) => state);
 
-  const [queryAll, setQueryAll] = useState('');
-  const [queryFav, setQueryFav] = useState('');
+  const [queryAll, setQueryAll] = useState(searchQueryAllShows);
+  const [queryFav, setQueryFav] = useState(searchQueryFavShows);
   const [queryMovies, setQueryMovies] = useState<QueryShowsAPIResponse[]>([]);
 
   const handleOnChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     if (e.target.name === 'allshows') {
       setQueryAll(e.target.value);
+      dispatch(updateSearchQueryAllShows);
     } else {
       setQueryFav(e.currentTarget.value);
+      dispatch(updateSearchQueryFavShows);
     }
   };
 
@@ -81,9 +92,7 @@ const MoviesList: React.FC = () => {
             </form>
           </div>
         </div>
-        <div
-          className='section-content'
-        >
+        <div className='section-content'>
           {queryAll
             ? queryMovies &&
               queryMovies.length > 0 &&
@@ -135,10 +144,7 @@ const MoviesList: React.FC = () => {
           )}
         </div>
 
-        <div
-          className='section-content'
-          
-        >
+        <div className='section-content'>
           {favMovies &&
             favMovies.length > 0 &&
             (queryFav
