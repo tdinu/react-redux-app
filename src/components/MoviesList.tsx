@@ -27,9 +27,20 @@ const MoviesList: React.FC = () => {
     searchQueryFavShows,
   } = useAppSelector((state: RootState) => state);
 
-  const [queryAll, setQueryAll] = useState(searchQueryAllShows);
-  const [queryFav, setQueryFav] = useState(searchQueryFavShows);
+  // const [queryAll, setQueryAll] = useState(searchQueryAllShows);
+  // const [queryFav, setQueryFav] = useState(searchQueryFavShows);
+  const [queryAll, setQueryAll] = useLocalStorage<string>(
+    'query-all',
+    searchQueryAllShows,
+  ); // useState(searchQueryAllShows);
+  const [queryFav, setQueryFav] = useLocalStorage<string>(
+    'query-favs',
+    searchQueryFavShows,
+  ); // useState(searchQueryFavShows);
   const [queryMovies, setQueryMovies] = useState<QueryShowsAPIResponse[]>([]);
+  const [favMovies, setFavMovies] = useLocalStorage<
+    ShowsAPIResponse[] | Show[]
+  >('fav-movies', []);
 
   const handleOnChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     if (e.target.name === 'allshows') {
@@ -46,10 +57,6 @@ const MoviesList: React.FC = () => {
       dispatch(updateSearchQueryFavShows);
     }
   };
-
-  const [favMovies, setFavMovies] = useLocalStorage<
-    ShowsAPIResponse[] | Show[]
-  >('fav-movies', []);
 
   const handleFavMovie = (movie: ShowsAPIResponse | Show) => {
     const isFav = favMovies.filter((item) => item.id === movie.id);
@@ -69,6 +76,10 @@ const MoviesList: React.FC = () => {
       getQueryMovies(`https://api.tvmaze.com/search/shows?q=${queryAll}`),
     );
   }, [queryAll, dispatch]);
+
+  useEffect(() => {
+    setQueryMovies(queryShows);
+  }, [queryShows]);
 
   useEffect(() => {
     setQueryMovies(queryShows);
