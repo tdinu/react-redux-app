@@ -34,9 +34,15 @@ const MoviesList: React.FC = () => {
   const handleOnChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     if (e.target.name === 'allshows') {
       setQueryAll(e.target.value);
-      dispatch(updateSearchQueryAllShows);
     } else {
       setQueryFav(e.currentTarget.value);
+    }
+  };
+
+  const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.target.name === 'allshows') {
+      dispatch(updateSearchQueryAllShows);
+    } else {
       dispatch(updateSearchQueryFavShows);
     }
   };
@@ -88,6 +94,7 @@ const MoviesList: React.FC = () => {
                 autoComplete='false'
                 value={queryAll}
                 onChange={handleOnChange}
+                onKeyUp={handleKeyUp}
               />
             </form>
           </div>
@@ -137,6 +144,7 @@ const MoviesList: React.FC = () => {
                   placeholder='Search Favorite...'
                   value={queryFav}
                   onChange={handleOnChange}
+                  onKeyUp={handleKeyUp}
                   disabled={favMovies.length <= 0}
                 />
               </form>
